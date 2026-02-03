@@ -504,8 +504,8 @@
                 setStatus('playing');
             };
 
-            const checkAnswer = () => {
-                const correctGrid = [];
+            const correctGrid = React.useMemo(() => {
+                const grid = [];
                 for(let i=0; i<4; i++) {
                     const p1Idx = i % 2;
                     const p2Idx = Math.floor(i / 2);
@@ -513,9 +513,12 @@
                     const a2 = currentData.p2[p2Idx];
                     
                     const combined = [a1, a2].sort().join('');
-                    correctGrid.push(combined);
+                    grid.push(combined);
                 }
+                return grid;
+            }, [currentData]);
 
+            const checkAnswer = () => {
                 let allCorrect = true;
                 for(let i=0; i<4; i++) {
                     if (userGrid[i] !== correctGrid[i]) allCorrect = false;
