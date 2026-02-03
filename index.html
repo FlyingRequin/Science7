@@ -452,37 +452,37 @@
             );
         };
 
+        const levels = [
+            {
+                title: "Level 1: Complete Dominance",
+                desc: "Green Pods (G) are dominant. Yellow Pods (g) are recessive. Cross two heterozygous parents.",
+                p1: ['G', 'g'],
+                p2: ['G', 'g'],
+                options: ['GG', 'Gg', 'gg'],
+                help: "Complete Dominance: If the Dominant (Capital) letter is present, it wins."
+            },
+            {
+                title: "Level 2: Incomplete Dominance",
+                desc: "Red (R) and White (r) make Pink (Rr). Cross a Pink flower (Rr) with a White flower (rr).",
+                p1: ['R', 'r'],
+                p2: ['r', 'r'],
+                options: ['RR', 'Rr', 'rr'],
+                help: "Incomplete Dominance: Heterozygous (Rr) is a BLEND (Pink)."
+            },
+            {
+                title: "Level 3: Codominance",
+                desc: "Black (B) and White (W) alleles show up together (Speckled). Cross a Speckled hen (BW) with a Black rooster (BB).",
+                p1: ['B', 'W'],
+                p2: ['B', 'B'],
+                options: ['BB', 'BW', 'WW'],
+                help: "Codominance: Both colors show up! BW is Speckled."
+            }
+        ];
+
         const PunnettChallenge = ({ onNavigate }) => {
             const [currentLevel, setCurrentLevel] = useState(0);
             const [userGrid, setUserGrid] = useState([null, null, null, null]);
             const [status, setStatus] = useState('playing'); // playing, correct, wrong
-
-            const levels = [
-                {
-                    title: "Level 1: Complete Dominance",
-                    desc: "Green Pods (G) are dominant. Yellow Pods (g) are recessive. Cross two heterozygous parents.",
-                    p1: ['G', 'g'],
-                    p2: ['G', 'g'],
-                    options: ['GG', 'Gg', 'gg'],
-                    help: "Complete Dominance: If the Dominant (Capital) letter is present, it wins."
-                },
-                {
-                    title: "Level 2: Incomplete Dominance",
-                    desc: "Red (R) and White (r) make Pink (Rr). Cross a Pink flower (Rr) with a White flower (rr).",
-                    p1: ['R', 'r'],
-                    p2: ['r', 'r'],
-                    options: ['RR', 'Rr', 'rr'],
-                    help: "Incomplete Dominance: Heterozygous (Rr) is a BLEND (Pink)."
-                },
-                {
-                    title: "Level 3: Codominance",
-                    desc: "Black (B) and White (W) alleles show up together (Speckled). Cross a Speckled hen (BW) with a Black rooster (BB).",
-                    p1: ['B', 'W'],
-                    p2: ['B', 'B'],
-                    options: ['BB', 'BW', 'WW'],
-                    help: "Codominance: Both colors show up! BW is Speckled."
-                }
-            ];
 
             const currentData = levels[currentLevel];
 
