@@ -152,18 +152,18 @@
             );
         };
 
+        // Simplified Codon Table for the game
+        const codons = {
+            'AUG': 'Met (Start)', 'UUU': 'Phe', 'AAA': 'Lys', 'CCC': 'Pro',
+            'GGG': 'Gly', 'UAA': 'Stop', 'GCA': 'Ala', 'CAC': 'His'
+        };
+
         const RibosomeRun = ({ onNavigate }) => {
             const [stage, setStage] = useState('transcribe'); // transcribe, translate, success
             const [dna, setDna] = useState('TAC');
             const [userRna, setUserRna] = useState('');
             const [feedback, setFeedback] = useState('Transcribe the DNA into mRNA. Remember: A->U, T->A, C->G, G->C');
             const [protein, setProtein] = useState(null);
-            
-            // Simplified Codon Table for the game
-            const codons = {
-                'AUG': 'Met (Start)', 'UUU': 'Phe', 'AAA': 'Lys', 'CCC': 'Pro',
-                'GGG': 'Gly', 'UAA': 'Stop', 'GCA': 'Ala', 'CAC': 'His'
-            };
             
             const generateProblem = () => {
                 const keys = Object.keys(codons);
@@ -281,24 +281,22 @@
                                     </div>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
-                                    {Object.values(codons).slice(0, 4).concat(Object.values(codons).slice(4, 8)).sort(() => Math.random() - 0.5).slice(0,4).map(amino => (
-                                        <button 
-                                            key={amino}
-                                            onClick={() => handleProteinSelect(amino)}
-                                            className="py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold shadow-lg"
-                                        >
-                                            {amino}
-                                        </button>
-                                    ))}
-                                    {/* Ensure correct answer is always present (simplified logic for demo, usually we pick distractor options carefully) */}
-                                    {!Object.values(codons).slice(0, 4).concat(Object.values(codons).slice(4, 8)).sort(() => Math.random() - 0.5).slice(0,4).includes(codons[userRna]) && (
-                                         <button 
-                                         onClick={() => handleProteinSelect(codons[userRna])}
-                                         className="py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold shadow-lg"
-                                     >
-                                         {codons[userRna]}
-                                     </button>
-                                    )}
+                                    {(() => {
+                                        const correct = codons[userRna];
+                                        const all = Object.values(codons);
+                                        const distractors = all.filter(a => a !== correct).sort(() => 0.5 - Math.random()).slice(0, 3);
+                                        const options = [...distractors, correct].sort(() => 0.5 - Math.random());
+
+                                        return options.map(amino => (
+                                            <button
+                                                key={amino}
+                                                onClick={() => handleProteinSelect(amino)}
+                                                className="py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold shadow-lg"
+                                            >
+                                                {amino}
+                                            </button>
+                                        ));
+                                    })()}
                                 </div>
                             </div>
                         )}
