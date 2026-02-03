@@ -642,40 +642,40 @@
             );
         };
 
+        const studyGuideContent = {
+            genetics: {
+                title: "Genetics & Heredity",
+                items: [
+                    { term: "Inherited vs. Acquired", def: "Inherited traits are coded in DNA and passed from parents (eye color). Acquired traits are learned or gained from the environment (reading, muscles)." },
+                    { term: "Gregor Mendel", def: "The 'Father of Genetics'. He studied pea plants as a monk to understand how traits are passed down." },
+                    { term: "Alleles", def: "Different forms of a gene. We have 2 copies of each gene (one from mom, one from dad)." },
+                    { term: "Dominant vs. Recessive", def: "Dominant (Capital letter) shows up even with just one copy. Recessive (lowercase) only shows if you have two copies." },
+                    { term: "Genotype vs. Phenotype", def: "Genotype = Genetic makeup (letters like Aa). Phenotype = Physical trait you see (like Brown eyes)." },
+                    { term: "Homozygous vs. Heterozygous", def: "Homozygous = Same alleles (AA or aa). Heterozygous = Different alleles (Aa)." }
+                ]
+            },
+            dna: {
+                title: "DNA Structure",
+                items: [
+                    { term: "Double Helix", def: "The twisted ladder shape of DNA." },
+                    { term: "Nucleotides", def: "Building blocks of DNA. 3 parts: Sugar, Phosphate, and Nitrogen Base." },
+                    { term: "Base Pairing", def: "A pairs with T (Apples in Tree). C pairs with G (Car in Garage)." },
+                    { term: "Genes & Proteins", def: "A gene is a section of DNA that codes for a specific protein (like Keratin or Hemoglobin)." },
+                    { term: "Chromosomes", def: "Tightly wound strands of DNA found in the nucleus." }
+                ]
+            },
+            complex: {
+                title: "Complex Patterns",
+                items: [
+                    { term: "Incomplete Dominance", def: "Blending of traits. Red flower + White flower = Pink flower." },
+                    { term: "Codominance", def: "Both traits show up together. Black chicken + White chicken = Checkered (Speckled) chicken." },
+                    { term: "Protein Synthesis", def: "DNA → mRNA → Protein. DNA stays in the nucleus; mRNA takes the code to the ribosome." }
+                ]
+            }
+        };
+
         const StudyGuide = ({ onNavigate }) => {
             const [activeTab, setActiveTab] = useState('genetics');
-
-            const content = {
-                genetics: {
-                    title: "Genetics & Heredity",
-                    items: [
-                        { term: "Inherited vs. Acquired", def: "Inherited traits are coded in DNA and passed from parents (eye color). Acquired traits are learned or gained from the environment (reading, muscles)." },
-                        { term: "Gregor Mendel", def: "The 'Father of Genetics'. He studied pea plants as a monk to understand how traits are passed down." },
-                        { term: "Alleles", def: "Different forms of a gene. We have 2 copies of each gene (one from mom, one from dad)." },
-                        { term: "Dominant vs. Recessive", def: "Dominant (Capital letter) shows up even with just one copy. Recessive (lowercase) only shows if you have two copies." },
-                        { term: "Genotype vs. Phenotype", def: "Genotype = Genetic makeup (letters like Aa). Phenotype = Physical trait you see (like Brown eyes)." },
-                        { term: "Homozygous vs. Heterozygous", def: "Homozygous = Same alleles (AA or aa). Heterozygous = Different alleles (Aa)." }
-                    ]
-                },
-                dna: {
-                    title: "DNA Structure",
-                    items: [
-                        { term: "Double Helix", def: "The twisted ladder shape of DNA." },
-                        { term: "Nucleotides", def: "Building blocks of DNA. 3 parts: Sugar, Phosphate, and Nitrogen Base." },
-                        { term: "Base Pairing", def: "A pairs with T (Apples in Tree). C pairs with G (Car in Garage)." },
-                        { term: "Genes & Proteins", def: "A gene is a section of DNA that codes for a specific protein (like Keratin or Hemoglobin)." },
-                        { term: "Chromosomes", def: "Tightly wound strands of DNA found in the nucleus." }
-                    ]
-                },
-                complex: {
-                    title: "Complex Patterns",
-                    items: [
-                        { term: "Incomplete Dominance", def: "Blending of traits. Red flower + White flower = Pink flower." },
-                        { term: "Codominance", def: "Both traits show up together. Black chicken + White chicken = Checkered (Speckled) chicken." },
-                        { term: "Protein Synthesis", def: "DNA → mRNA → Protein. DNA stays in the nucleus; mRNA takes the code to the ribosome." }
-                    ]
-                }
-            };
 
             return (
                 <div className="space-y-6">
@@ -684,20 +684,20 @@
                             <BookOpen className="text-blue-500" /> Study Guide
                         </h2>
                         <div className="flex bg-white rounded-lg p-1 shadow-sm border border-slate-200">
-                            {Object.keys(content).map(key => (
+                            {Object.keys(studyGuideContent).map(key => (
                                 <button
                                     key={key}
                                     onClick={() => setActiveTab(key)}
                                     className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === key ? 'bg-blue-100 text-blue-700' : 'text-slate-500 hover:text-slate-700'}`}
                                 >
-                                    {content[key].title}
+                                    {studyGuideContent[key].title}
                                 </button>
                             ))}
                         </div>
                     </div>
 
                     <div className="grid gap-4">
-                        {content[activeTab].items.map((item, idx) => (
+                        {studyGuideContent[activeTab].items.map((item, idx) => (
                             <div key={idx} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-blue-300 transition-colors">
                                 <h3 className="font-bold text-lg text-emerald-700 mb-1">{item.term}</h3>
                                 <p className="text-slate-700 leading-relaxed">{item.def}</p>
