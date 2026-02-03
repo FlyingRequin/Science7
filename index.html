@@ -943,13 +943,6 @@
             );
         };
 
-        const MasterQuiz = ({ onNavigate }) => {
-            const [currentQ, setCurrentQ] = useState(0);
-            const [score, setScore] = useState(0);
-            const [showResult, setShowResult] = useState(false);
-            const [selected, setSelected] = useState(null);
-            const [isCorrect, setIsCorrect] = useState(null);
-
             const questions = [
                 // --- Foundation Questions (1-10) ---
                 { q: "Which part of the cell contains the DNA?", options: ["Ribosome", "Nucleus", "Mitochondria", "Cell Wall"], a: 1 },
@@ -1012,6 +1005,14 @@
                 { q: "Where does Translation (mRNA to Protein) happen?", options: ["Nucleus", "Ribosome/Cytoplasm", "Cell Membrane", "Golgi Body"], a: 1 },
                 { q: "Are all mutations harmful?", options: ["Yes, always", "No, some are neutral or beneficial", "Only in humans", "Only in bacteria"], a: 1 }
             ];
+
+        const MasterQuiz = ({ onNavigate }) => {
+            const [currentQ, setCurrentQ] = useState(0);
+            const [score, setScore] = useState(0);
+            const [showResult, setShowResult] = useState(false);
+            const [selected, setSelected] = useState(null);
+            const [isCorrect, setIsCorrect] = useState(null);
+
 
             const handleAnswer = (idx) => {
                 if (selected !== null) return;
