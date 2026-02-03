@@ -1,0 +1,1076 @@
+import React, { useState, useEffect } from 'react';
+
+// --- Icons (SVG Components) ---
+const BookOpen = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+);
+const Dna = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M2 15c6.667-6 13.333 0 20-6"/><path d="M9 22c1.798-1.998 2.518-3.995 2.807-5.993"/><path d="M15 2c-1.798 1.998-2.518 3.995-2.807 5.993"/><path d="M17 6l-2.5-2.5"/><path d="M14 8l-1-1"/><path d="M7 18l2.5 2.5"/><path d="M3.5 14.5l-1 1"/><path d="M20 9l-1 1"/><path d="M14.5 20.5l1-1"/><path d="M2 9c6.667 6 13.333 0 20 6"/></svg>
+);
+const GridIcon = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+);
+const Brain = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>
+);
+const ArrowRight = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+);
+const Check = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M20 6 9 17l-5-5"/></svg>
+);
+const X = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+);
+const RefreshCw = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 21h-5v-5"/></svg>
+);
+const Trophy = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+);
+const Star = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+);
+const Factory = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M17 18h1"/><path d="M12 18h1"/><path d="M7 18h1"/></svg>
+);
+const Users = ({ size = 24, className = "" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+);
+
+// --- Main App Component ---
+const BioBuddy = () => {
+    const [currentView, setCurrentView] = useState('home');
+
+    const renderView = () => {
+        switch (currentView) {
+            case 'home': return <Home onNavigate={setCurrentView} />;
+            case 'study': return <StudyGuide onNavigate={setCurrentView} />;
+            case 'dna': return <HelixHero onNavigate={setCurrentView} />;
+            case 'punnett': return <PunnettPro onNavigate={setCurrentView} />;
+            case 'challenge': return <PunnettChallenge onNavigate={setCurrentView} />;
+            case 'ribosome': return <RibosomeRun onNavigate={setCurrentView} />;
+            case 'pedigree': return <PedigreeDetective onNavigate={setCurrentView} />;
+            case 'quiz': return <MasterQuiz onNavigate={setCurrentView} />;
+            default: return <Home onNavigate={setCurrentView} />;
+        }
+    };
+
+    return (
+        <div className="min-h-screen flex flex-col">
+            <nav className="bg-emerald-600 text-white p-4 shadow-lg sticky top-0 z-50">
+                <div className="max-w-4xl mx-auto flex justify-between items-center">
+                    <div className="flex items-center gap-2 cursor-pointer select-none" onClick={() => setCurrentView('home')}>
+                        <Dna size={28} className="animate-pulse" />
+                        <h1 className="text-xl md:text-2xl font-bold tracking-tight">BioBuddy</h1>
+                    </div>
+                    <button
+                        onClick={() => setCurrentView('home')}
+                        className="text-sm font-medium hover:text-emerald-100 transition-colors bg-emerald-700 px-3 py-1 rounded-md"
+                    >
+                        Main Menu
+                    </button>
+                </div>
+            </nav>
+            <main className="max-w-4xl mx-auto p-4 md:p-6 w-full flex-grow">
+                {renderView()}
+            </main>
+        </div>
+    );
+};
+
+const Home = ({ onNavigate }) => {
+    const modules = [
+        { id: 'study', title: 'Study Guide', icon: <BookOpen size={32} />, color: 'bg-blue-500', desc: 'Review key terms: Genotypes, Phenotypes, and DNA.' },
+        { id: 'dna', title: 'Helix Hero', icon: <Dna size={32} />, color: 'bg-indigo-500', desc: 'Game: Match DNA bases (A-T, C-G).' },
+        { id: 'punnett', title: 'Punnett Pro', icon: <GridIcon size={32} />, color: 'bg-purple-500', desc: 'Tool: Explore offspring traits interactively.' },
+        { id: 'ribosome', title: 'Ribosome Run', icon: <Factory size={32} />, color: 'bg-pink-500', desc: 'Adv. Game: Transcribe DNA to mRNA & build proteins!' },
+        { id: 'pedigree', title: 'Pedigree Detective', icon: <Users size={32} />, color: 'bg-teal-600', desc: 'Logic Puzzle: Solve family tree mysteries.' },
+        { id: 'challenge', title: 'Punnett Challenge', icon: <Trophy size={32} />, color: 'bg-orange-500', desc: 'Quiz: Fill the squares yourself! (Hard)' },
+        { id: 'quiz', title: 'Master Quiz', icon: <Brain size={32} />, color: 'bg-emerald-600', desc: 'Test: 55 questions covering EVERYTHING!' },
+    ];
+
+    return (
+        <div className="space-y-8 animate-[fadeIn_0.5s_ease-out]">
+            <div className="text-center space-y-4 py-8">
+                <h2 className="text-3xl font-extrabold text-slate-900">7th Grade Biology: Genetics & DNA</h2>
+                <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+                    Master the building blocks of life! Choose a module below to start learning.
+                </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+                {modules.map((m) => (
+                    <button
+                        key={m.id}
+                        onClick={() => onNavigate(m.id)}
+                        className={`group relative overflow-hidden bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 text-left border border-slate-100
+                            ${m.id === 'challenge' || m.id === 'ribosome' || m.id === 'pedigree' ? 'border-l-4 border-l-' + m.color.replace('bg-', '') : 'hover:border-emerald-300'}
+                        `}
+                    >
+                        <div className={`absolute top-0 right-0 p-3 opacity-10 group-hover:opacity-20 transition-opacity`}>
+                            {React.cloneElement(m.icon, { size: 100 })}
+                        </div>
+                        <div className={`${m.color} w-12 h-12 rounded-xl flex items-center justify-center text-white mb-4 shadow-sm group-hover:scale-110 transition-transform`}>
+                            {m.icon}
+                        </div>
+                        <h3 className="text-xl font-bold mb-2 group-hover:text-emerald-600 transition-colors">{m.title}</h3>
+                        <p className="text-slate-600 text-sm">{m.desc}</p>
+                    </button>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const RibosomeRun = ({ onNavigate }) => {
+    const [stage, setStage] = useState('transcribe'); // transcribe, translate, success
+    const [dna, setDna] = useState('TAC');
+    const [userRna, setUserRna] = useState('');
+    const [feedback, setFeedback] = useState('Transcribe the DNA into mRNA. Remember: A->U, T->A, C->G, G->C');
+    const [protein, setProtein] = useState(null);
+
+    // Simplified Codon Table for the game
+    const codons = {
+        'AUG': 'Met (Start)', 'UUU': 'Phe', 'AAA': 'Lys', 'CCC': 'Pro',
+        'GGG': 'Gly', 'UAA': 'Stop', 'GCA': 'Ala', 'CAC': 'His'
+    };
+
+    const generateProblem = () => {
+        const keys = Object.keys(codons);
+        const randomCodon = keys[Math.floor(Math.random() * keys.length)];
+
+        // Reverse transcribe to get the DNA template
+        let template = "";
+        for(let char of randomCodon) {
+            if(char === 'A') template += 'T';
+            else if(char === 'U') template += 'A';
+            else if(char === 'G') template += 'C';
+            else if(char === 'C') template += 'G';
+        }
+
+        setDna(template);
+        setUserRna('');
+        setStage('transcribe');
+        setFeedback('Transcribe the DNA into mRNA. (A->U, T->A)');
+        setProtein(null);
+    };
+
+    const handleRnaInput = (base) => {
+        if (userRna.length < 3) {
+            const newRna = userRna + base;
+            setUserRna(newRna);
+
+            if (newRna.length === 3) {
+                // Check transcription immediately
+                let expected = "";
+                for(let char of dna) {
+                    if(char === 'T') expected += 'A';
+                    else if(char === 'A') expected += 'U';
+                    else if(char === 'C') expected += 'G';
+                    else if(char === 'G') expected += 'C';
+                }
+
+                if (newRna === expected) {
+                    setFeedback('Correct! Now translate the mRNA into a Protein using the chart.');
+                    setStage('translate');
+                } else {
+                    setFeedback('Incorrect mRNA sequence. Try again! (A pairs with U in RNA)');
+                    setTimeout(() => setUserRna(''), 1500);
+                }
+            }
+        }
+    };
+
+    const handleProteinSelect = (amino) => {
+        const correctAmino = codons[userRna];
+        if (amino === correctAmino) {
+            setStage('success');
+            setFeedback('Excellent! You built the protein.');
+        } else {
+            setFeedback('Wrong amino acid. Check the chart!');
+        }
+    };
+
+    return (
+        <div className="max-w-2xl mx-auto space-y-6">
+            <div className="text-center bg-pink-50 p-6 rounded-2xl border border-pink-100">
+                <h2 className="text-2xl font-bold text-pink-700 flex justify-center items-center gap-2 mb-2">
+                    <Factory /> Ribosome Run
+                </h2>
+                <p className="text-slate-700 font-medium">{feedback}</p>
+            </div>
+
+            <div className="bg-slate-900 p-8 rounded-2xl shadow-xl text-center space-y-6">
+                {/* DNA Display */}
+                <div>
+                    <p className="text-slate-400 text-sm font-mono mb-2">DNA TEMPLATE STRAND</p>
+                    <div className="text-4xl font-mono font-bold tracking-widest text-blue-400 border-b-2 border-slate-700 inline-block pb-2 px-8">
+                        {dna}
+                    </div>
+                </div>
+
+                {/* mRNA Input Display */}
+                <div className="relative">
+                    <p className="text-slate-400 text-sm font-mono mb-2">mRNA STRAND</p>
+                    <div className="text-4xl font-mono font-bold tracking-widest text-pink-400 min-h-[60px] flex items-center justify-center gap-4">
+                        {userRna.split('').map((char, i) => (
+                            <span key={i} className="animate-[zoomIn_0.2s_ease-out]">{char}</span>
+                        ))}
+                        {[...Array(3 - userRna.length)].map((_, i) => (
+                            <span key={i} className="w-6 h-1 bg-slate-700 rounded-full"></span>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Controls */}
+                {stage === 'transcribe' && (
+                    <div className="grid grid-cols-4 gap-4 max-w-sm mx-auto pt-4">
+                        {['A', 'U', 'C', 'G'].map(base => (
+                            <button
+                                key={base}
+                                onClick={() => handleRnaInput(base)}
+                                className="h-16 rounded-xl bg-slate-800 text-white font-bold text-2xl hover:bg-pink-600 border-b-4 border-slate-950 active:border-b-0 active:translate-y-1 transition-all"
+                            >
+                                {base}
+                            </button>
+                        ))}
+                    </div>
+                )}
+
+                {/* Translation Stage */}
+                {stage === 'translate' && (
+                    <div className="space-y-4 animate-[fadeIn_0.5s_ease-out]">
+                        <div className="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                            <p className="text-slate-400 text-xs mb-3">CODON CHART</p>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-sm text-slate-300">
+                                {Object.entries(codons).map(([codon, amino]) => (
+                                    <div key={codon} className={`p-2 rounded ${codon === userRna ? 'bg-yellow-900/50 text-yellow-200 border border-yellow-700' : 'bg-slate-900'}`}>
+                                        <span className="font-bold">{codon}</span> : {amino}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            {Object.values(codons).slice(0, 4).concat(Object.values(codons).slice(4, 8)).sort(() => Math.random() - 0.5).slice(0,4).map(amino => (
+                                <button
+                                    key={amino}
+                                    onClick={() => handleProteinSelect(amino)}
+                                    className="py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold shadow-lg"
+                                >
+                                    {amino}
+                                </button>
+                            ))}
+                            {/* Ensure correct answer is always present (simplified logic for demo, usually we pick distractor options carefully) */}
+                            {!Object.values(codons).slice(0, 4).concat(Object.values(codons).slice(4, 8)).sort(() => Math.random() - 0.5).slice(0,4).includes(codons[userRna]) && (
+                                    <button
+                                    onClick={() => handleProteinSelect(codons[userRna])}
+                                    className="py-3 px-6 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold shadow-lg"
+                                >
+                                    {codons[userRna]}
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {stage === 'success' && (
+                    <div className="animate-[zoomIn_0.3s_ease-out] py-4">
+                        <p className="text-green-400 text-xl font-bold mb-4">Protein Synthesized! 🧬</p>
+                        <button
+                            onClick={generateProblem}
+                            className="bg-white text-slate-900 px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition-colors"
+                        >
+                            Next Sequence
+                        </button>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+const PedigreeDetective = ({ onNavigate }) => {
+    const [level, setLevel] = useState(0);
+    const [solved, setSolved] = useState(false);
+    const [feedback, setFeedback] = useState('');
+
+    const puzzles = [
+        {
+            title: "The Mystery of the Blue Eyes",
+            desc: "Brown eyes (B) are dominant. Blue eyes (b) are recessive. Both parents have Brown eyes, but their child has Blue eyes.",
+            question: "What must the Genotype of the Parents be?",
+            options: [
+                { label: "Both Homozygous Dominant (BB)", correct: false },
+                { label: "One BB, One bb", correct: false },
+                { label: "Both Heterozygous (Bb)", correct: true },
+                { label: "Both Recessive (bb)", correct: false }
+            ],
+            explanation: "Correct! Two carriers (Bb) have a 25% chance of having a recessive (bb) child.",
+            // Visual representation data (simplified)
+            visual: { p1: 'shaded-no', p2: 'shaded-no', k1: 'shaded-yes' }
+        },
+        {
+            title: "Dominant Trait Detective",
+            desc: "Polydactyly (extra fingers) is a Dominant trait (D). The Father has it (Dd). The Mother does not (dd).",
+            question: "What is the chance their child will have extra fingers?",
+            options: [
+                { label: "0%", correct: false },
+                { label: "50%", correct: true },
+                { label: "75%", correct: false },
+                { label: "100%", correct: false }
+            ],
+            explanation: "Correct! Dd x dd = 50% Dd (affected) and 50% dd (normal).",
+            visual: { p1: 'shaded-yes', p2: 'shaded-no', k1: 'question' }
+        },
+        {
+            title: "Generation Skipper",
+            desc: "A trait skips a generation. Grandparents have it, Parents don't, Child has it.",
+            question: "Is this trait Dominant or Recessive?",
+            options: [
+                { label: "Dominant", correct: false },
+                { label: "Recessive", correct: true },
+            ],
+            explanation: "Correct! Recessive traits can 'hide' in carriers (heterozygous parents) and reappear later.",
+            visual: { p1: 'shaded-yes', p2: 'shaded-yes', k1: 'shaded-yes' } // simplified visual logic needed
+        }
+    ];
+
+    const currentPuzzle = puzzles[level];
+
+    const checkAnswer = (isCorrect) => {
+        if(isCorrect) {
+            setFeedback(currentPuzzle.explanation);
+            setSolved(true);
+        } else {
+            setFeedback("Not quite. Think about the Punnett Square...");
+        }
+    };
+
+    return (
+        <div className="max-w-xl mx-auto space-y-6">
+            <div className="text-center">
+                <h2 className="text-2xl font-bold text-teal-700 flex justify-center items-center gap-2">
+                    <Users /> Pedigree Detective
+                </h2>
+                <p className="text-slate-600 mt-2">Case File #{level + 1}</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-2xl shadow-lg border border-teal-100">
+                {/* Simple SVG Visualizer */}
+                <div className="flex justify-center mb-8">
+                    <svg width="200" height="150" viewBox="0 0 200 150">
+                        {/* Connection Lines */}
+                        <line x1="60" y1="40" x2="140" y2="40" stroke="#94a3b8" strokeWidth="2" />
+                        <line x1="100" y1="40" x2="100" y2="100" stroke="#94a3b8" strokeWidth="2" />
+
+                        {/* Parent 1 (Square/Male) */}
+                        <rect x="30" y="10" width="60" height="60" fill={currentPuzzle.visual.p1 === 'shaded-yes' ? '#0d9488' : 'white'} stroke="#0d9488" strokeWidth="3" />
+
+                        {/* Parent 2 (Circle/Female) */}
+                        <circle cx="170" cy="40" r="30" fill={currentPuzzle.visual.p2 === 'shaded-yes' ? '#0d9488' : 'white'} stroke="#0d9488" strokeWidth="3" />
+
+                        {/* Child (Question Mark or Shaded) */}
+                        <rect x="70" y="100" width="60" height="60" fill={currentPuzzle.visual.k1 === 'shaded-yes' ? '#0d9488' : '#f0f9ff'} stroke="#0d9488" strokeWidth="3" />
+                        {currentPuzzle.visual.k1 === 'question' && (
+                            <text x="100" y="140" textAnchor="middle" fill="#0f766e" fontSize="30" fontWeight="bold">?</text>
+                        )}
+                    </svg>
+                </div>
+
+                <h3 className="text-xl font-bold text-slate-800 mb-2">{currentPuzzle.title}</h3>
+                <p className="text-slate-600 mb-6">{currentPuzzle.desc}</p>
+
+                <p className="font-bold text-teal-800 mb-3">{currentPuzzle.question}</p>
+
+                <div className="space-y-3">
+                    {!solved ? (
+                        currentPuzzle.options.map((opt, i) => (
+                            <button
+                                key={i}
+                                onClick={() => checkAnswer(opt.correct)}
+                                className="w-full text-left p-4 rounded-xl border border-slate-200 hover:border-teal-400 hover:bg-teal-50 transition-all font-medium"
+                            >
+                                {opt.label}
+                            </button>
+                        ))
+                    ) : (
+                        <div className="bg-teal-50 p-6 rounded-xl border border-teal-200 text-center animate-[zoomIn_0.3s_ease-out]">
+                            <p className="text-teal-800 font-bold text-lg mb-4">{feedback}</p>
+                            {level < puzzles.length - 1 ? (
+                                <button
+                                    onClick={() => { setLevel(l => l+1); setSolved(false); setFeedback(''); }}
+                                    className="bg-teal-600 text-white px-6 py-2 rounded-full font-bold hover:bg-teal-700"
+                                >
+                                    Next Case
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => onNavigate('home')}
+                                    className="bg-slate-800 text-white px-6 py-2 rounded-full font-bold hover:bg-slate-900"
+                                >
+                                    Case Closed (Back to Menu)
+                                </button>
+                            )}
+                        </div>
+                    )}
+                </div>
+                {feedback && !solved && (
+                    <p className="text-red-500 text-center mt-4 font-medium animate-pulse">{feedback}</p>
+                )}
+            </div>
+        </div>
+    );
+};
+
+const PunnettChallenge = ({ onNavigate }) => {
+    const [currentLevel, setCurrentLevel] = useState(0);
+    const [userGrid, setUserGrid] = useState([null, null, null, null]);
+    const [status, setStatus] = useState('playing'); // playing, correct, wrong
+
+    const levels = [
+        {
+            title: "Level 1: Complete Dominance",
+            desc: "Green Pods (G) are dominant. Yellow Pods (g) are recessive. Cross two heterozygous parents.",
+            p1: ['G', 'g'],
+            p2: ['G', 'g'],
+            options: ['GG', 'Gg', 'gg'],
+            help: "Complete Dominance: If the Dominant (Capital) letter is present, it wins."
+        },
+        {
+            title: "Level 2: Incomplete Dominance",
+            desc: "Red (R) and White (r) make Pink (Rr). Cross a Pink flower (Rr) with a White flower (rr).",
+            p1: ['R', 'r'],
+            p2: ['r', 'r'],
+            options: ['RR', 'Rr', 'rr'],
+            help: "Incomplete Dominance: Heterozygous (Rr) is a BLEND (Pink)."
+        },
+        {
+            title: "Level 3: Codominance",
+            desc: "Black (B) and White (W) alleles show up together (Speckled). Cross a Speckled hen (BW) with a Black rooster (BB).",
+            p1: ['B', 'W'],
+            p2: ['B', 'B'],
+            options: ['BB', 'BW', 'WW'],
+            help: "Codominance: Both colors show up! BW is Speckled."
+        }
+    ];
+
+    const currentData = levels[currentLevel];
+
+    const handleCellClick = (index) => {
+        if (status === 'correct') return;
+
+        const currentVal = userGrid[index];
+        const opts = currentData.options;
+        let nextIndex = 0;
+
+        if (currentVal) {
+            const currentOptIndex = opts.indexOf(currentVal);
+            nextIndex = (currentOptIndex + 1) % opts.length;
+        }
+
+        const newGrid = [...userGrid];
+        newGrid[index] = opts[nextIndex];
+        setUserGrid(newGrid);
+        setStatus('playing');
+    };
+
+    const checkAnswer = () => {
+        const correctGrid = [];
+        for(let i=0; i<4; i++) {
+            const p1Idx = i % 2;
+            const p2Idx = Math.floor(i / 2);
+            const a1 = currentData.p1[p1Idx];
+            const a2 = currentData.p2[p2Idx];
+
+            const combined = [a1, a2].sort().join('');
+            correctGrid.push(combined);
+        }
+
+        let allCorrect = true;
+        for(let i=0; i<4; i++) {
+            if (userGrid[i] !== correctGrid[i]) allCorrect = false;
+        }
+
+        if (allCorrect) {
+            setStatus('correct');
+        } else {
+            setStatus('wrong');
+        }
+    };
+
+    const nextLevel = () => {
+        if (currentLevel < levels.length - 1) {
+            setCurrentLevel(c => c + 1);
+            setUserGrid([null, null, null, null]);
+            setStatus('playing');
+        } else {
+            onNavigate('home');
+        }
+    };
+
+    return (
+        <div className="bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 min-h-full p-4 md:p-8 rounded-xl shadow-2xl text-white animate-gradient">
+            <div className="max-w-2xl mx-auto space-y-6">
+                <div className="flex justify-between items-center border-b border-white/20 pb-4">
+                    <h2 className="text-2xl font-bold flex items-center gap-2">
+                        <Trophy className="text-yellow-400" /> Challenge Mode
+                    </h2>
+                    <div className="bg-white/10 px-3 py-1 rounded-full text-sm font-medium">
+                        Level {currentLevel + 1}/{levels.length}
+                    </div>
+                </div>
+
+                <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-orange-300">{currentData.title}</h3>
+                    <p className="text-indigo-100 leading-relaxed text-lg">{currentData.desc}</p>
+                    <p className="text-sm text-indigo-300 italic flex items-center gap-2">
+                        <Brain size={16} /> Hint: {currentData.help}
+                    </p>
+                </div>
+
+                <div className="flex flex-col items-center py-6 select-none">
+                    {/* Top Parent (P1) */}
+                    <div className="flex ml-14 md:ml-20 mb-2 gap-2 md:gap-4">
+                        {currentData.p1.map((a, i) => (
+                            <div key={`p1-${i}`} className="w-20 h-20 md:w-24 md:h-24 bg-indigo-500/20 text-indigo-200 rounded-lg text-3xl font-bold border-2 border-indigo-400/30 flex items-center justify-center">
+                                {a}
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="flex gap-2">
+                        {/* Side Parent (P2) */}
+                        <div className="flex flex-col gap-2 md:gap-4 mr-2">
+                            {currentData.p2.map((a, i) => (
+                                <div key={`p2-${i}`} className="w-20 h-20 md:w-24 md:h-24 bg-purple-500/20 text-purple-200 rounded-lg text-3xl font-bold border-2 border-purple-400/30 flex items-center justify-center">
+                                    {a}
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Interactive Grid */}
+                        <div className="grid grid-cols-2 gap-2 md:gap-4 bg-black/20 p-2 md:p-3 rounded-xl border border-white/10 backdrop-blur-sm">
+                            {[0, 1, 2, 3].map(i => (
+                                <button
+                                    key={i}
+                                    onClick={() => handleCellClick(i)}
+                                    className={`w-20 h-20 md:w-24 md:h-24 rounded-lg text-2xl md:text-3xl font-bold flex items-center justify-center transition-all duration-200
+                                        ${userGrid[i]
+                                            ? 'bg-white text-indigo-900 shadow-[0_0_15px_rgba(255,255,255,0.3)] scale-100'
+                                            : 'bg-white/5 text-white/30 hover:bg-white/10 scale-95 border-2 border-dashed border-white/20'}
+                                        ${status === 'wrong' ? 'animate-shake border-red-500 border-2' : ''}
+                                        ${status === 'correct' ? 'bg-emerald-400 text-emerald-900 border-emerald-400' : ''}
+                                    `}
+                                >
+                                    {userGrid[i] || "?"}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex justify-center pt-4">
+                    {status === 'playing' || status === 'wrong' ? (
+                        <div className="space-y-4 text-center">
+                            {status === 'wrong' && <p className="text-red-300 font-bold animate-pulse">Incorrect. Check your pairs!</p>}
+                            <button
+                                onClick={checkAnswer}
+                                className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-bold shadow-lg transition-transform hover:scale-105 active:scale-95 text-lg"
+                            >
+                                Check Answer
+                            </button>
+                            <p className="text-xs text-indigo-300">Tap the boxes to fill them</p>
+                        </div>
+                    ) : (
+                        <div className="space-y-4 text-center animate-[fadeIn_0.5s_ease-out]">
+                            <div className="text-3xl font-bold text-emerald-300 flex items-center justify-center gap-2">
+                                <Star className="text-yellow-400 fill-yellow-400" /> Correct!
+                            </div>
+                            {currentLevel < levels.length - 1 ? (
+                                <button
+                                    onClick={nextLevel}
+                                    className="bg-white text-indigo-900 px-8 py-3 rounded-full font-bold shadow-lg hover:bg-indigo-50 transition-colors text-lg"
+                                >
+                                    Next Level <ArrowRight className="inline ml-2" size={20} />
+                                </button>
+                            ) : (
+                                <div className="space-y-4">
+                                    <p className="text-xl">Challenge Complete!</p>
+                                    <button
+                                        onClick={() => onNavigate('home')}
+                                        className="bg-white/20 hover:bg-white/30 text-white px-8 py-3 rounded-full font-bold transition-colors"
+                                    >
+                                        Back to Menu
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const StudyGuide = ({ onNavigate }) => {
+    const [activeTab, setActiveTab] = useState('genetics');
+
+    const content = {
+        genetics: {
+            title: "Genetics & Heredity",
+            items: [
+                { term: "Inherited vs. Acquired", def: "Inherited traits are coded in DNA and passed from parents (eye color). Acquired traits are learned or gained from the environment (reading, muscles)." },
+                { term: "Gregor Mendel", def: "The 'Father of Genetics'. He studied pea plants as a monk to understand how traits are passed down." },
+                { term: "Alleles", def: "Different forms of a gene. We have 2 copies of each gene (one from mom, one from dad)." },
+                { term: "Dominant vs. Recessive", def: "Dominant (Capital letter) shows up even with just one copy. Recessive (lowercase) only shows if you have two copies." },
+                { term: "Genotype vs. Phenotype", def: "Genotype = Genetic makeup (letters like Aa). Phenotype = Physical trait you see (like Brown eyes)." },
+                { term: "Homozygous vs. Heterozygous", def: "Homozygous = Same alleles (AA or aa). Heterozygous = Different alleles (Aa)." }
+            ]
+        },
+        dna: {
+            title: "DNA Structure",
+            items: [
+                { term: "Double Helix", def: "The twisted ladder shape of DNA." },
+                { term: "Nucleotides", def: "Building blocks of DNA. 3 parts: Sugar, Phosphate, and Nitrogen Base." },
+                { term: "Base Pairing", def: "A pairs with T (Apples in Tree). C pairs with G (Car in Garage)." },
+                { term: "Genes & Proteins", def: "A gene is a section of DNA that codes for a specific protein (like Keratin or Hemoglobin)." },
+                { term: "Chromosomes", def: "Tightly wound strands of DNA found in the nucleus." }
+            ]
+        },
+        complex: {
+            title: "Complex Patterns",
+            items: [
+                { term: "Incomplete Dominance", def: "Blending of traits. Red flower + White flower = Pink flower." },
+                { term: "Codominance", def: "Both traits show up together. Black chicken + White chicken = Checkered (Speckled) chicken." },
+                { term: "Protein Synthesis", def: "DNA → mRNA → Protein. DNA stays in the nucleus; mRNA takes the code to the ribosome." }
+            ]
+        }
+    };
+
+    return (
+        <div className="space-y-6">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                <h2 className="text-2xl font-bold flex items-center gap-2">
+                    <BookOpen className="text-blue-500" /> Study Guide
+                </h2>
+                <div className="flex bg-white rounded-lg p-1 shadow-sm border border-slate-200">
+                    {Object.keys(content).map(key => (
+                        <button
+                            key={key}
+                            onClick={() => setActiveTab(key)}
+                            className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${activeTab === key ? 'bg-blue-100 text-blue-700' : 'text-slate-500 hover:text-slate-700'}`}
+                        >
+                            {content[key].title}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            <div className="grid gap-4">
+                {content[activeTab].items.map((item, idx) => (
+                    <div key={idx} className="bg-white p-5 rounded-xl border border-slate-200 shadow-sm hover:border-blue-300 transition-colors">
+                        <h3 className="font-bold text-lg text-emerald-700 mb-1">{item.term}</h3>
+                        <p className="text-slate-700 leading-relaxed">{item.def}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
+const HelixHero = ({ onNavigate }) => {
+    const [sequence, setSequence] = useState([]);
+    const [userSequence, setUserSequence] = useState([]);
+    const [message, setMessage] = useState("Complete the DNA strand! Match A with T, and C with G.");
+    const [level, setLevel] = useState(1);
+    const [gameState, setGameState] = useState('playing');
+
+    const bases = ['A', 'T', 'C', 'G'];
+
+    const generateSequence = (len) => {
+        const newSeq = Array(len).fill(null).map(() => bases[Math.floor(Math.random() * bases.length)]);
+        setSequence(newSeq);
+        setUserSequence(Array(len).fill(null));
+        setGameState('playing');
+        setMessage(`Level ${level}: Build the complementary strand.`);
+    };
+
+    useEffect(() => {
+        generateSequence(4 + level);
+    }, [level]);
+
+    const handleBaseClick = (base, index) => {
+        if (gameState !== 'playing') return;
+
+        const correctPair = { 'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C' };
+        const targetBase = sequence[index];
+
+        if (correctPair[targetBase] === base) {
+            const newUserSeq = [...userSequence];
+            newUserSeq[index] = base;
+            setUserSequence(newUserSeq);
+
+            if (newUserSeq.every(b => b !== null)) {
+                setGameState('success');
+                setMessage("Perfect Match! Loading next level...");
+                setTimeout(() => setLevel(l => l + 1), 1500);
+            }
+        } else {
+            setMessage("Oops! Remember: Apples in Tree (A-T), Car in Garage (C-G)");
+        }
+    };
+
+    return (
+        <div className="max-w-2xl mx-auto space-y-8">
+            <div className="text-center space-y-2">
+                <h2 className="text-2xl font-bold text-indigo-700 flex justify-center items-center gap-2">
+                    <Dna /> Helix Hero - Level {level}
+                </h2>
+                <p className="bg-indigo-50 text-indigo-800 py-2 px-4 rounded-full inline-block text-sm font-medium">
+                    {message}
+                </p>
+            </div>
+
+            <div className="bg-slate-900 p-8 rounded-2xl shadow-xl overflow-x-auto">
+                <div className="flex gap-4 justify-center min-w-max">
+                    <div className="flex flex-col gap-2">
+                        <span className="text-slate-400 text-xs font-mono mb-1">TEMPLATE</span>
+                        <div className="flex gap-2">
+                            {sequence.map((base, i) => (
+                                <div key={`temp-${i}`} className={`
+                                    w-12 h-16 flex items-center justify-center rounded-lg font-bold text-2xl text-white shadow-inner
+                                    ${base === 'A' ? 'bg-red-500' : base === 'T' ? 'bg-yellow-500' : base === 'C' ? 'bg-blue-500' : 'bg-green-500'}
+                                `}>
+                                    {base}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="h-8 w-full my-1 flex justify-center min-w-max gap-2">
+                    {sequence.map((_, i) => (
+                        <div key={`link-${i}`} className="w-12 flex justify-center">
+                            <div className={`w-1 h-full bg-slate-600 ${userSequence[i] ? 'bg-white shadow-[0_0_10px_white]' : ''}`}></div>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="flex gap-4 justify-center min-w-max">
+                    <div className="flex flex-col gap-2">
+                        <div className="flex gap-2">
+                            {sequence.map((_, i) => (
+                                <div key={`user-${i}`} className="relative w-12 h-16">
+                                    {userSequence[i] ? (
+                                        <div className={`
+                                            w-full h-full flex items-center justify-center rounded-lg font-bold text-2xl text-white shadow-lg animate-[zoomIn_0.3s_ease-out]
+                                            ${userSequence[i] === 'A' ? 'bg-red-500' : userSequence[i] === 'T' ? 'bg-yellow-500' : userSequence[i] === 'C' ? 'bg-blue-500' : 'bg-green-500'}
+                                        `}>
+                                            {userSequence[i]}
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-2 gap-1 w-full h-full">
+                                            {bases.map(b => (
+                                                <button
+                                                    key={b}
+                                                    onClick={() => handleBaseClick(b, i)}
+                                                    className={`
+                                                        rounded text-[10px] font-bold text-white hover:scale-110 transition-transform
+                                                        ${b === 'A' ? 'bg-red-500' : b === 'T' ? 'bg-yellow-500' : b === 'C' ? 'bg-blue-500' : 'bg-green-500'}
+                                                    `}
+                                                >
+                                                    {b}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                        <span className="text-slate-400 text-xs font-mono mt-1">YOUR STRAND</span>
+                    </div>
+                </div>
+            </div>
+
+            <div className="bg-white p-4 rounded-xl border border-slate-200 text-center">
+                <h3 className="font-bold text-slate-700 mb-2">Base Pairing Rules</h3>
+                <div className="flex justify-center gap-6 text-sm">
+                    <div className="flex items-center gap-2">
+                        <span className="w-3 h-3 bg-red-500 rounded-full"></span> Adenine (A)
+                        <ArrowRight size={14} />
+                        <span className="w-3 h-3 bg-yellow-500 rounded-full"></span> Thymine (T)
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <span className="w-3 h-3 bg-blue-500 rounded-full"></span> Cytosine (C)
+                        <ArrowRight size={14} />
+                        <span className="w-3 h-3 bg-green-500 rounded-full"></span> Guanine (G)
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const PunnettPro = ({ onNavigate }) => {
+    const [parent1, setParent1] = useState(['B', 'b']);
+    const [parent2, setParent2] = useState(['b', 'b']);
+    const [grid, setGrid] = useState([null, null, null, null]);
+    const [feedback, setFeedback] = useState("");
+
+    const toggleAllele = (parent, idx) => {
+        const setter = parent === 1 ? setParent1 : setParent2;
+        const current = parent === 1 ? parent1 : parent2;
+        const newVal = [...current];
+        newVal[idx] = newVal[idx] === 'B' ? 'b' : 'B';
+        setter(newVal);
+        setGrid([null, null, null, null]);
+        setFeedback("");
+    };
+
+    const checkCell = (idx) => {
+        const p1Idx = idx % 2;
+        const p2Idx = Math.floor(idx / 2);
+
+        const allele1 = parent1[p1Idx];
+        const allele2 = parent2[p2Idx];
+        // Logic: Sort so Capital is first for standard notation (Bb not bB)
+        const correct = (allele1 === 'B' || allele2 === 'B') ? (allele1 === 'B' && allele2 === 'B' ? 'BB' : 'Bb') : 'bb';
+
+        const newGrid = [...grid];
+        newGrid[idx] = correct;
+        setGrid(newGrid);
+
+        if (newGrid.every(c => c !== null)) {
+            calculateStats(newGrid);
+        }
+    };
+
+    const calculateStats = (finalGrid) => {
+        const dom = finalGrid.filter(g => g.includes('B')).length;
+        const rec = finalGrid.filter(g => g === 'bb').length;
+        setFeedback(`Results: ${dom/4 * 100}% Brown Eyes (Dominant), ${rec/4 * 100}% Blue Eyes (Recessive).`);
+    };
+
+    return (
+        <div className="max-w-xl mx-auto space-y-6">
+            <div className="text-center">
+                <h2 className="text-2xl font-bold text-purple-600 flex justify-center items-center gap-2">
+                    <GridIcon /> Punnett Square Pro
+                </h2>
+                <p className="text-slate-600 mt-2">
+                    Click the parent letters to change their genotype.<br/>
+                    Then click the empty boxes to calculate the offspring.
+                </p>
+            </div>
+
+            <div className="flex flex-col items-center select-none">
+                {/* Top Parent */}
+                <div className="flex ml-16 mb-2 gap-4">
+                    {parent1.map((a, i) => (
+                        <button key={`p1-${i}`} onClick={() => toggleAllele(1, i)} className="w-16 h-16 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-lg text-2xl font-bold border-2 border-blue-300 transition-colors">
+                            {a}
+                        </button>
+                    ))}
+                </div>
+
+                <div className="flex gap-2">
+                    {/* Side Parent */}
+                    <div className="flex flex-col gap-4 mr-2">
+                        {parent2.map((a, i) => (
+                            <button key={`p2-${i}`} onClick={() => toggleAllele(2, i)} className="w-16 h-16 bg-pink-100 hover:bg-pink-200 text-pink-800 rounded-lg text-2xl font-bold border-2 border-pink-300 transition-colors">
+                                {a}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Grid */}
+                    <div className="grid grid-cols-2 gap-2 bg-slate-200 p-2 rounded-xl">
+                        {[0, 1, 2, 3].map(i => (
+                            <button
+                                key={i}
+                                onClick={() => checkCell(i)}
+                                className={`w-24 h-24 sm:w-32 sm:h-32 rounded-lg text-3xl font-bold flex items-center justify-center transition-all duration-300
+                                    ${grid[i] ? 'bg-white shadow-sm text-slate-800' : 'bg-slate-100 text-slate-300 hover:bg-white'}
+                                `}
+                            >
+                                {grid[i] || "?"}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {feedback && (
+                <div className="bg-purple-50 border border-purple-200 p-4 rounded-xl text-center animate-[zoomIn_0.3s_ease-out]">
+                    <p className="text-purple-900 font-bold text-lg">{feedback}</p>
+                </div>
+            )}
+
+            <div className="bg-white p-4 rounded-xl text-sm text-slate-500 border border-slate-200 mt-4">
+                <p><strong>Scenario:</strong> Brown eyes (B) are dominant over Blue eyes (b).</p>
+            </div>
+        </div>
+    );
+};
+
+const MasterQuiz = ({ onNavigate }) => {
+    const [currentQ, setCurrentQ] = useState(0);
+    const [score, setScore] = useState(0);
+    const [showResult, setShowResult] = useState(false);
+    const [selected, setSelected] = useState(null);
+    const [isCorrect, setIsCorrect] = useState(null);
+
+    const questions = [
+        // --- Foundation Questions (1-10) ---
+        { q: "Which part of the cell contains the DNA?", options: ["Ribosome", "Nucleus", "Mitochondria", "Cell Wall"], a: 1 },
+        { q: "What do we call the 'twisted ladder' shape of DNA?", options: ["Single Spiral", "Double Helix", "Triple Axis", "Circle"], a: 1 },
+        { q: "In DNA, Adenine (A) always pairs with:", options: ["Cytosine (C)", "Guanine (G)", "Thymine (T)", "Uracil (U)"], a: 2 },
+        { q: "An organism with two DIFFERENT alleles (Aa) is called:", options: ["Heterozygous", "Homozygous", "Purebred", "Recessive"], a: 0 },
+        { q: "Which trait is 'Acquired' rather than 'Inherited'?", options: ["Eye Color", "Height Potential", "Reading a book", "Blood Type"], a: 2 },
+        { q: "Who is known as the 'Father of Genetics'?", options: ["Albert Einstein", "Charles Darwin", "Gregor Mendel", "Isaac Newton"], a: 2 },
+        { q: "What is a Phenotype?", options: ["The genetic code (Aa)", "The physical appearance", "A type of protein", "A mutation"], a: 1 },
+        { q: "If a Red flower and White flower make a PINK flower, this is:", options: ["Codominance", "Incomplete Dominance", "Complete Dominance", "Recessive"], a: 1 },
+        { q: "DNA contains instructions to build what?", options: ["Proteins", "Sugar", "Fat", "Water"], a: 0 },
+        { q: "Guanine (G) pairs with:", options: ["Adenine", "Thymine", "Cytosine", "Uracil"], a: 2 },
+
+        // --- Challenge Questions (11-30) ---
+        { q: "If a DNA sample consists of 20% Adenine (A), what percentage of Thymine (T) must it have?", options: ["20%", "30%", "80%", "0%"], a: 0 },
+        { q: "What is the molecule that carries the genetic code from the nucleus to the ribosome?", options: ["tRNA", "mRNA (Messenger RNA)", "rRNA", "DNA"], a: 1 },
+        { q: "A 'Frame-shift' mutation is caused by which error?", options: ["Replacing one base", "Insertion or Deletion of a base", "Crossing over", "Cell division"], a: 1 },
+        { q: "In RNA, Thymine (T) is replaced by which base?", options: ["Cytosine", "Guanine", "Uracil", "Adenine"], a: 2 },
+        { q: "If two parents are BOTH Heterozygous (Bb) for Brown eyes, what is the percent chance of a Blue-eyed child?", options: ["0%", "25%", "50%", "75%"], a: 1 },
+        { q: "Which of the following represents a MALE's sex chromosomes?", options: ["XX", "XY", "YY", "XO"], a: 1 },
+        { q: "Color blindness is a sex-linked trait. Why is it more common in males?", options: ["Males have weaker eyes", "It is on the Y chromosome", "Males only have one X chromosome", "Females cannot carry the gene"], a: 2 },
+        { q: "A segment of DNA has the sequence ATTCG. What is the complementary DNA strand?", options: ["TAAGC", "UAAGC", "GCCTA", "ATTCG"], a: 0 },
+        { q: "What process creates gametes (sperm and egg cells) with half the number of chromosomes?", options: ["Mitosis", "Meiosis", "Respiration", "Digestion"], a: 1 },
+        { q: "How many chromosomes do human body cells typically have?", options: ["23 pairs (46 total)", "12 pairs (24 total)", "46 pairs (92 total)", "23 total"], a: 0 },
+        { q: "A 'Carrier' for a recessive genetic disease is someone who:", options: ["Is sick with the disease", "Is homozygous dominant", "Is heterozygous (has the gene but is healthy)", "Cannot pass it on"], a: 2 },
+        { q: "In Codominance, if you cross a Black Chicken (BB) and White Chicken (WW), the offspring are:", options: ["Gray", "Black", "White", "Speckled (Black & White)"], a: 3 },
+        { q: "Which organelle is the 'factory' where proteins are actually assembled?", options: ["Nucleus", "Ribosome", "Mitochondria", "Vacuole"], a: 1 },
+        { q: "A 'codon' is a sequence of how many bases that codes for one amino acid?", options: ["1", "2", "3", "4"], a: 2 },
+        { q: "If a dominant allele causes a disease (like Huntington's), which genotype would be healthy?", options: ["HH", "Hh", "hh", "None"], a: 2 },
+        { q: "What is the difference between a Point Mutation and a Chromosomal Mutation?", options: ["Point affects one gene; Chromosomal affects many", "Point affects many genes", "They are the same", "Chromosomal is smaller"], a: 0 },
+        { q: "In a pedigree chart, what shape usually represents a MALE?", options: ["Circle", "Square", "Triangle", "Diamond"], a: 1 },
+        { q: "Selective Breeding is different from Genetic Engineering because:", options: ["It happens in a lab", "It involves choosing parents naturally", "It changes DNA directly", "It creates clones"], a: 1 },
+        { q: "Which nitrogen base is found in DNA but NOT in RNA?", options: ["Adenine", "Guanine", "Thymine", "Cytosine"], a: 2 },
+        { q: "If the mRNA codon is 'AUG', what amino acid does it usually start?", options: ["Stop", "Methionine (Start)", "Leucine", "Glycine"], a: 1 },
+
+        // --- NEW Coverage Questions (31-55) ---
+        { q: "Sexual reproduction involves how many parents?", options: ["One", "Two", "Three", "Four"], a: 1 },
+        { q: "Mitosis results in two daughter cells that are:", options: ["Genetically Identical", "Genetically Different", "Haploid", "Gametes"], a: 0 },
+        { q: "What molecule makes up the 'backbone' (sides) of the DNA ladder?", options: ["Sugar and Phosphate", "Nitrogen Bases", "Lipids", "Amino Acids"], a: 0 },
+        { q: "When does DNA replication occur?", options: ["During Mitosis", "Before the cell divides (Interphase)", "After cell division", "During Cytokinesis"], a: 1 },
+        { q: "Where does Transcription (DNA to mRNA) happen?", options: ["Ribosome", "Cytoplasm", "Nucleus", "Mitochondria"], a: 2 },
+        { q: "Which molecule transfers the correct Amino Acid to the Ribosome?", options: ["mRNA", "tRNA (Transfer RNA)", "rRNA", "DNA"], a: 1 },
+        { q: "Sickle Cell Anemia is caused by a mutation affecting which protein?", options: ["Keratin", "Insulin", "Hemoglobin", "Collagen"], a: 2 },
+        { q: "Down Syndrome is usually caused by:", options: ["A missing chromosome", "An extra copy of Chromosome 21", "A point mutation", "Bacteria"], a: 1 },
+        { q: "In a pedigree, a horizontal line connecting a square and circle represents:", options: ["Siblings", "Marriage/Mating", "Offspring", "Divorce"], a: 1 },
+        { q: "What is a Karyotype?", options: ["A type of blood test", "A picture of all the chromosomes in a cell", "A sequence of DNA", "A protein"], a: 1 },
+        { q: "Another word for 'Homozygous' is:", options: ["Hybrid", "Purebred", "Carrier", "Mutant"], a: 1 },
+        { q: "Another word for 'Heterozygous' is:", options: ["Hybrid", "Purebred", "True-breeding", "Clone"], a: 0 },
+        { q: "An organism with DNA from another organism added to it is called:", options: ["A Clone", "A GMO (Transgenic)", "A Hybrid", "A Mutant"], a: 1 },
+        { q: "Dolly the Sheep was famous for being the first:", options: ["GMO", "Clone from an adult cell", "Test tube baby", "Hybrid"], a: 1 },
+        { q: "If you flip a coin for gender, what is the chance of having a girl?", options: ["25%", "50%", "75%", "100%"], a: 1 },
+        { q: "Which of these is an example of the environment affecting a phenotype?", options: ["Eye color", "Blood Type", "Skin tanning in the sun", "Ear shape"], a: 2 },
+        { q: "If a DNA sample has 30% Cytosine, how much Adenine does it have?", options: ["20%", "30%", "40%", "50%"], a: 0 },
+        { q: "What holds the nitrogen bases together in the middle of DNA?", options: ["Super glue", "Hydrogen bonds", "Covalent bonds", "Ionic bonds"], a: 1 },
+        { q: "Is RNA double-stranded or single-stranded?", options: ["Double", "Single", "Triple", "Quadruple"], a: 1 },
+        { q: "Which genetic disorder helps protect against Malaria in carriers?", options: ["Cystic Fibrosis", "Sickle Cell Anemia", "Huntington's", "Hemophilia"], a: 1 },
+        { q: "Asexual reproduction results in offspring that are:", options: ["Clones of the parent", "Genetically unique", "A mix of two parents", "Mutants"], a: 0 },
+        { q: "Meiosis produces which type of cells?", options: ["Body cells (Skin, Muscle)", "Sex cells (Sperm, Egg)", "Blood cells", "Bone cells"], a: 1 },
+        { q: "In a pedigree, a fully shaded shape means the person:", options: ["Is a carrier", "Does NOT have the trait", "Has the trait expressed", "Is deceased"], a: 2 },
+        { q: "Where does Translation (mRNA to Protein) happen?", options: ["Nucleus", "Ribosome/Cytoplasm", "Cell Membrane", "Golgi Body"], a: 1 },
+        { q: "Are all mutations harmful?", options: ["Yes, always", "No, some are neutral or beneficial", "Only in humans", "Only in bacteria"], a: 1 }
+    ];
+
+    const handleAnswer = (idx) => {
+        if (selected !== null) return;
+        setSelected(idx);
+        const correct = idx === questions[currentQ].a;
+        setIsCorrect(correct);
+        if (correct) setScore(s => s + 1);
+
+        setTimeout(() => {
+            if (currentQ < questions.length - 1) {
+                setCurrentQ(c => c + 1);
+                setSelected(null);
+                setIsCorrect(null);
+            } else {
+                setShowResult(true);
+            }
+        }, 1500);
+    };
+
+    const reset = () => {
+        setScore(0);
+        setCurrentQ(0);
+        setShowResult(false);
+        setSelected(null);
+        setIsCorrect(null);
+    };
+
+    if (showResult) {
+        return (
+            <div className="text-center space-y-6 py-10 animate-[zoomIn_0.3s_ease-out]">
+                <Trophy className="mx-auto text-yellow-500 w-24 h-24" />
+                <h2 className="text-3xl font-bold text-slate-800">Quiz Complete!</h2>
+                <p className="text-xl">You scored <span className="font-bold text-emerald-600">{score}</span> out of {questions.length}</p>
+
+                <div className="flex justify-center gap-4">
+                    <button onClick={reset} className="flex items-center gap-2 px-6 py-3 bg-slate-200 text-slate-800 rounded-full font-bold hover:bg-slate-300">
+                        <RefreshCw size={20} /> Try Again
+                    </button>
+                    <button onClick={() => onNavigate('home')} className="px-6 py-3 bg-emerald-600 text-white rounded-full font-bold hover:bg-emerald-700">
+                        Back to Menu
+                    </button>
+                </div>
+            </div>
+        );
+    }
+
+    const q = questions[currentQ];
+
+    return (
+        <div className="max-w-xl mx-auto">
+            <div className="flex justify-between items-center mb-6">
+                <span className="text-sm font-bold text-slate-400">QUESTION {currentQ + 1}/{questions.length}</span>
+                <span className="text-sm font-bold text-emerald-600">SCORE: {score}</span>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 mb-6">
+                <h3 className="text-xl font-bold text-slate-800 mb-6">{q.q}</h3>
+                <div className="space-y-3">
+                    {q.options.map((opt, i) => (
+                        <button
+                            key={i}
+                            onClick={() => handleAnswer(i)}
+                            disabled={selected !== null}
+                            className={`w-full text-left p-4 rounded-xl border-2 transition-all font-medium flex justify-between items-center
+                                ${selected === null
+                                    ? 'border-slate-100 hover:border-emerald-200 hover:bg-emerald-50'
+                                    : i === q.a
+                                        ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                                        : selected === i
+                                            ? 'border-red-400 bg-red-50 text-red-700'
+                                            : 'border-slate-100 opacity-50'
+                                }
+                            `}
+                        >
+                            {opt}
+                            {selected !== null && i === q.a && <Check className="text-emerald-500" />}
+                            {selected === i && i !== q.a && <X className="text-red-500" />}
+                        </button>
+                    ))}
+                </div>
+            </div>
+            {isCorrect !== null && (
+                <div className={`text-center font-bold text-lg animate-[fadeIn_0.3s_ease-out] ${isCorrect ? 'text-emerald-600' : 'text-red-500'}`}>
+                    {isCorrect ? "Correct! 🎉" : "Nice try!"}
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default BioBuddy;
